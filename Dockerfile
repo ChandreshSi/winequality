@@ -2,15 +2,6 @@
 
 FROM amazoncorretto:8
 
-ARG BUILD_DATE
-ARG SPARK_VERSION=3.0.0
-
-LABEL org.label-schema.name="Apache PySpark $SPARK_VERSION" \
-      org.label-schema.build-date=$BUILD_DATE \
-      org.label-schema.version=$SPARK_VERSION
-
-ENV PYSPARK_PYTHON="/opt/miniconda3/bin/python"
-
 RUN yum -y update 
 RUN yum -y install yum-utils
 
@@ -30,16 +21,16 @@ RUN pip3 install sklearn
 RUN pip3 install pyspark
 RUN pip3 install findspark
 
-RUn python3 -c "import numpy as np"
+RUN python3 -c "import numpy as np"
 
-#RUN mkdir /predict
 ENV PROG_DIR /winepredict
 COPY test.py /winepredict/
 COPY ValidationDataset.csv /winepredict/
 COPY trainingmodel.model /winepredict/
+COPY .aws /home/
 
 ENV PROG_NAME test.py
 ADD ${PROG_NAME} .
 
 ENTRYPOINT ["spark-submit","test.py"]
-CMD ["ValidationDataset.csv"]
+CMD ["/winepredict/ValidationDataset.csv"]

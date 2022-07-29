@@ -21,7 +21,20 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics import f1_score
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+import boto3
+import os
+from pathlib import Path
 
+
+def download(key, bucket_name):
+    print('downloading ' + key)
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket(bucket_name)
+    objs = list(bucket.objects.filter(Prefix=key))
+    for obj in objs:
+        obj_path = os.path.dirname(obj.key)
+        Path(obj_path).mkdir(parents=True, exist_ok=True)
+        bucket.download_file(obj.key, obj.key)
 
 #Starting the spark session
 conf = pyspark.SparkConf().setAppName('winequality').setMaster('local')
@@ -60,8 +73,12 @@ def to_labeled_point(sc, features, labels, categorical=False):
 #rdd converted dataset
 dataset = to_labeled_point(sc, features, label)
 
+#download from s3
+model_path = "data-output/trainingmodel.model"
+download(model_path, 'pa2')
+
 #loading the model from s3
-RFModel = RandomForestModel.load(sc, "/winepredict/trainingmodel.model/")
+RFModel = RandomForestModel.load(sc, model_path)
 
 print("model loaded successfully")
 predictions = RFModel.predict(dataset.map(lambda x: x.features))
