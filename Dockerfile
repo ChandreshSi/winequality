@@ -20,6 +20,7 @@ RUN pip3 install pandas
 RUN pip3 install sklearn
 RUN pip3 install pyspark
 RUN pip3 install findspark
+RUN pip3 install boto3
 
 RUN python3 -c "import numpy as np"
 
