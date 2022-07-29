@@ -1,8 +1,11 @@
 # winequality
 
 EMR is used to run the Apache spark and runs on a cluster of EC2 instances. Amazon EMR (previously called Amazon Elastic MapReduce) is a managed cluster platform that simplifies running big data frameworks, such as Apache Hadoop and Apache Spark, on AWS to process and analyze vast amounts of data. Using these frameworks and related open-source projects, you can process data for analytics purposes and business intelligence workloads. Amazon EMR also lets you transform and move large amounts of data into and out of other AWS data stores and databases, such as Amazon Simple Storage Service (Amazon S3) and Amazon DynamoDB.
+
 PySpark is used to train and test the model. RandomForest is used to evaluate the individual models and take a collective decision using voting. Random forests or random decision forests is an ensemble learning method for classification, regression and other tasks that operates by constructing a multitude of decision trees at training time. For classification tasks, the output of the random forest is the class selected by most trees.
+
 Training.py file is used to train the model. The model then will be pushed to S3 bucket. S3 bucket is required to have a common repository which every worker node can access.
+
 Dockerfile is used to generate the docker image, which is uploaded to docker hub. This image is used to create docker container for testing the model.
 
 Perform the following steps:
