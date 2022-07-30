@@ -27,7 +27,6 @@ RUN python3 -c "import numpy as np"
 ENV PROG_DIR /winepredict
 COPY test.py /winepredict/
 COPY ValidationDataset.csv /winepredict/
-COPY trainingmodel.model /winepredict/
 COPY .aws /home/
 
 ENV PROG_NAME test.py
